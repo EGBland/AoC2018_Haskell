@@ -10,7 +10,13 @@ day2_1 = do
 
     let checksum = (length [id | two <- twos, snd two]) * (length [id | three <- threes, snd three])
     putStrLn (show checksum)
-    
+
+day2_2 = do
+    contents <- readFile "input_02.txt"
+    let list = words contents
+    let similarities = [ sims | s1 <- list, s2 <- list, sims <- [stringSimilarity s1 s2]]
+    putStrLn (head [sc | sc <- similarities, length sc == length (head list) - 1])
+
 getNs :: [(Char,Int)] -> Int -> Bool
 getNs freqs n
     | length freqs == 1 = snd (head freqs) == n
@@ -24,3 +30,7 @@ letterCount s c
     | null s = 0
     | length s == 1 = if head s == c then 1 else 0
     | otherwise = letterCount ([head s]) c + letterCount (tail s) c
+
+stringSimilarity :: String -> String -> String
+stringSimilarity s1 s2 =
+    [fst sc | sc <- zip s1 s2, fst sc == snd sc]
